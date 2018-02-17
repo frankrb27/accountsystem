@@ -15,24 +15,6 @@ import org.apache.activemq.ActiveMQConnectionFactory;
  
 public class Producer {
  
-    public enum UserAction {
- 
-        CONFIGURACION("IR A OPCIONES DE CONFIGURACION"),
-        PORTADA("VER PORTADA"),
-        LOGIN("ACCEDER A LA APLICACION"),
-        SUGERENCIA("ENVIAR SUGERENCIA");
- 
-        private final String userAction;
- 
-        private UserAction(String userAction) {
-            this.userAction = userAction;
-        }
- 
-        public String getActionAsString() {
-            return this.userAction;
-        }
-    }
- 
     private static final Random RANDOM = new Random(System.currentTimeMillis());
  
     private static final String URL = "tcp://localhost:61616";
@@ -47,6 +29,7 @@ public class Producer {
     
     private static final int MESSAGES_TO_SEND = 20;
  
+    private String DEFAULT_MESSAGE = "1000001010203073CC                              FRANK JAIDER RODRIGUEZ BARRETO09840001000000";
     /**
      * 
      * @throws JMSException
@@ -81,8 +64,7 @@ public class Producer {
     private void sendMessages(Session session, MessageProducer producer) throws JMSException {
         final Producer messageSender = new Producer();
         for (int i = 1; i <= MESSAGES_TO_SEND; i++) {
-            final UserAction userActionToSend = getRandomUserAction();
-            messageSender.sendMessage(userActionToSend.getActionAsString(), session, producer);
+            messageSender.sendMessage(DEFAULT_MESSAGE, session, producer);
         }
     }
  
@@ -96,15 +78,6 @@ public class Producer {
     private void sendMessage(String message, Session session, MessageProducer producer) throws JMSException {
         final TextMessage textMessage = session.createTextMessage(message);
         producer.send(textMessage);
-    }
- 
-    /**
-     * 
-     * @return
-     */
-    private static UserAction getRandomUserAction() {
-        final int userActionNumber = (int) (RANDOM.nextFloat() * UserAction.values().length);
-        return UserAction.values()[userActionNumber];
     }
  
     /**
