@@ -31,7 +31,7 @@ public class Consumer {
  
     private static final int TIMEOUT = 1000;
     
-    private static final String PATH = "/home/frank/personal/javeriana/Semestre_II/Implementacion/proyecto/java-code/proyectoimplementacion/AccountSystemIntegration/accountsystem/";
+    private static final String PATH = "/home/frank/personal/javeriana/Semestre_II/Implementacion/proyecto/java-code/accountsystem/";
     
     private static final String FILE = "consolid-account-";
     
@@ -41,10 +41,18 @@ public class Consumer {
  
     private int totalConsumedMessages = 0;
  
+    /**
+     * 
+     */
     public Consumer() {
         this.consumedMessageTypes = new HashMap<String, Integer>();
     }
  
+    /**
+     * 
+     * @throws JMSException
+     * @throws Exception
+     */
     public void processMessages() throws JMSException, Exception{
  
         final ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(USER, PASSWORD, URL);
@@ -65,6 +73,12 @@ public class Consumer {
         showProcessedResults();
     }
  
+    /**
+     * 
+     * @param consumer
+     * @throws JMSException
+     * @throws Exception
+     */
     private void processAllMessagesInQueue(MessageConsumer consumer) throws JMSException, Exception {
         Message message;
         while ((message = consumer.receive(TIMEOUT)) != null) {
@@ -72,6 +86,12 @@ public class Consumer {
         }
     }
  
+    /**
+     * 
+     * @param message
+     * @throws JMSException
+     * @throws Exception
+     */
     private void proccessMessage(Message message) throws JMSException, Exception {
         if (message instanceof TextMessage) {        	
         	final TextMessage textMessage = (TextMessage) message;
@@ -87,6 +107,10 @@ public class Consumer {
         }
     }
  
+    /**
+     * 
+     * @param message
+     */
     private void incrementMessageType(String message) {
         if (consumedMessageTypes.get(message) == null) {
             consumedMessageTypes.put(message, 1);
@@ -96,6 +120,9 @@ public class Consumer {
         }
     }
  
+    /**
+     * 
+     */
     private void showProcessedResults() {
         System.out.println("Procesados un total de " + totalConsumedMessages + " mensajes");
         for (String messageType : consumedMessageTypes.keySet()) {
@@ -105,6 +132,10 @@ public class Consumer {
         }
     }
  
+    /**
+     * 
+     * @return
+     */
     private String getFileName() {
     	String fileName = FILE;
     	Calendar c = Calendar.getInstance();
@@ -112,6 +143,12 @@ public class Consumer {
     	return fileName;
     }
     
+    /**
+     * 
+     * @param args
+     * @throws JMSException
+     * @throws Exception
+     */
     public static void main(String[] args) throws JMSException, Exception {
         final Consumer consumer = new Consumer();
         consumer.processMessages();

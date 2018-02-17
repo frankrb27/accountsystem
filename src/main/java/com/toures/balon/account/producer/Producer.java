@@ -47,6 +47,10 @@ public class Producer {
     
     private static final int MESSAGES_TO_SEND = 20;
  
+    /**
+     * 
+     * @throws JMSException
+     */
     public void sendMessages() throws JMSException {
  
         final ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(USER, PASSWORD, URL);
@@ -68,6 +72,12 @@ public class Producer {
         System.out.println("Mensajes enviados correctamente");
     }
  
+    /**
+     * 
+     * @param session
+     * @param producer
+     * @throws JMSException
+     */
     private void sendMessages(Session session, MessageProducer producer) throws JMSException {
         final Producer messageSender = new Producer();
         for (int i = 1; i <= MESSAGES_TO_SEND; i++) {
@@ -76,16 +86,32 @@ public class Producer {
         }
     }
  
+    /**
+     * 
+     * @param message
+     * @param session
+     * @param producer
+     * @throws JMSException
+     */
     private void sendMessage(String message, Session session, MessageProducer producer) throws JMSException {
         final TextMessage textMessage = session.createTextMessage(message);
         producer.send(textMessage);
     }
  
+    /**
+     * 
+     * @return
+     */
     private static UserAction getRandomUserAction() {
         final int userActionNumber = (int) (RANDOM.nextFloat() * UserAction.values().length);
         return UserAction.values()[userActionNumber];
     }
  
+    /**
+     * 
+     * @param args
+     * @throws JMSException
+     */
     public static void main(String[] args) throws JMSException {
         final Producer messageSender = new Producer();
         messageSender.sendMessages();
