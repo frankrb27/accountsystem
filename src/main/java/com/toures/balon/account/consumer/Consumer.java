@@ -1,11 +1,11 @@
 package com.toures.balon.account.consumer;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.jms.Connection;
 import javax.jms.Destination;
@@ -19,7 +19,12 @@ import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 public class Consumer {
-	private static final String URL = "tcp://localhost:61616";
+	
+	private static String RESOURCE_BUNDLE_APP = "com.toures.balon.account.application";
+
+	private static ResourceBundle bundleApp = ResourceBundle.getBundle(RESOURCE_BUNDLE_APP);
+	
+	private static final String URL = bundleApp.getString("activemq.url");
 	 
     private static final String USER = ActiveMQConnection.DEFAULT_USER;
  
@@ -31,11 +36,11 @@ public class Consumer {
  
     private static final int TIMEOUT = 1000;
     
-    private static final String PATH = "/home/frank/personal/javeriana/Semestre_II/Implementacion/proyecto/java-code/accountsystem/";
+    private static final String PATH = bundleApp.getString("file.read");
     
-    private static final String FILE = "consolid-account-";
+    private static final String FILE = bundleApp.getString("file.name");
     
-    private static final String EXTENSION = ".txt";
+    private static final String EXTENSION = bundleApp.getString("file.extension");
  
     private final Map<String, Integer> consumedMessageTypes;
  
